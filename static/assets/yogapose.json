@@ -1,0 +1,66 @@
+[
+    {
+        "id": 1,
+        "name": "Virbhadra-1",
+        "english_name": "Warrior Pose I",
+        "description": "Virbhadrasana I, or Warrior Pose I, is a standing yoga pose that strengthens the legs, opens the hips, and improves balance and concentration. It is named after the mythological warrior Virabhadra.",
+        "img_url": "../static/assets/yoga/1.png",
+        "pose": "../static/assets/yoga_img/virabhadrasana-I-550x550.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Virbhadra-2",
+        "english_name": "Warrior Pose II",
+        "description": "Virbhadrasana II, or Warrior Pose II, is a dynamic standing pose that enhances stamina, stability, and focus. It stretches the legs and opens the chest and shoulders, promoting a sense of inner strength and resilience.",
+        "img_url": "../static/assets/yoga/2.png",
+        "pose": "../static/assets/yoga_img/virabhadrasana-II-550x550.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Adha Mukha Svanasana",
+        "english_name": "Downward-Facing Dog Pose",
+        "description": "Adho Mukha Svanasana, commonly known as Downward-Facing Dog Pose, is a foundational yoga posture that stretches the entire body. It builds strength in the arms, shoulders, and legs while improving flexibility and circulation.",
+        "img_url": "../static/assets/yoga/3.png",
+        "pose": "../static/assets/yoga_img/adho-mukha-svanasana-550x550.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Eka Pada Adha Mukha Svanasa",
+        "english_name": "One-Legged Downward-Facing Dog Pose",
+        "description": "Eka Pada Adho Mukha Svanasana, or One-Legged Downward-Facing Dog Pose, is a variation of Downward-Facing Dog where one leg is extended upward. It strengthens the core, arms, and legs while improving balance and focus.",
+        "img_url": "../static/assets/yoga/4.png",
+        "pose": "../static/assets/yoga_img/eka pada.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Vrikshasana",
+        "english_name": "Tree Pose",
+        "description": "Vrikshasana, or Tree Pose, is a balancing pose that improves concentration and stability. It strengthens the legs and core muscles while promoting relaxation and a sense of groundedness.",
+        "img_url": "../static/assets/yoga/5.png",
+        "pose": "../static/assets/yoga_img/vriskasana.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Padmasana",
+        "english_name": "Lotus Pose",
+        "description": "Padmasana, or Lotus Pose, is a seated yoga posture that promotes flexibility in the hips and knees. It encourages calmness and inner reflection, making it ideal for meditation and pranayama (breathing exercises).",
+        "img_url": "../static/assets/yoga/7.png",
+        "pose": "../static/assets/yoga_img/padmasana-550x550.jpg"
+    },
+    {
+        "id": 7,
+        "name": "Bitilasana",
+        "english_name": "Cow Pose",
+        "description": "Bitilasana, also known as Cow Pose, is a gentle yoga pose that stretches the spine and opens the chest. It improves spinal flexibility and coordination between breath and movement, often practiced in combination with Cat Pose (Marjaryasana).",
+        "img_url": "../static/assets/yoga/8.png",
+        "pose": "../static/assets/yoga_img/bitilasana-550x550.jpg"
+    },
+    {
+        "id": 8,
+        "name": "Trikon Asana",
+        "english_name": "Triangle Pose",
+        "description": "Trikonasana, or Triangle Pose, is a standing yoga posture that stretches and strengthens the legs, hips, and spine. It improves balance, stability, and concentration while stimulating abdominal organs and promoting digestion.",
+        "img_url": "../static/assets/yoga/9.png",
+        "pose": "../static/assets/yoga_img/utthita-trikonasana-550x550.jpg"
+    }
+]

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YogaPants.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/dashboard.css">
+</head>
+<body>
+    <header>
+        <div class="btn"><i class="fa-solid fa-user"></i></div>
+        <div onclick="homepage()" class="btn"><i class="fa-solid fa-house"></i></div>
+    </header>
+    <section>
+        <div class="yoga-girl">
+            <img src="static/assets/yoga-girl.png" alt="">
+            <h3>Wake up with a sunrise meditation.</h3>
+            <p>Wake up with a sunrise meditation sweat it out with lunchtime HIT,or unwind with an evening flow.</p>
+        </div>
+        <div class="yoga-search">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="search-inputbox" placeholder="Try Something New">
+            </div>
+            <h3>
+                Today List
+            </h3>
+            <div class="dashborad-yoga-list">
+                <h2>Yoga</h2>
+                <div class="yoga-select">
+                    <ul class="yoga-select-ul">
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="yoga-details">
+<!---------------------------------------------->
+        </div>
+    </section>
+    <section>
+        <div class="cart">
+            <h3>
+                Select yoga asana from the list
+            </h3>
+            <p>Selected yoga asanas</p>
+            <div class="none-selected">
+                <i class="fa-solid fa-circle-info"></i><h3>None Selected</h3>
+            </div>
+            <div class="selected-yoga">
+                    
+                    <ul class="selected-yoga-ul">
+<!------------------------>
+                    </ul>
+
+                <div class="yoga-start-btns">
+                    <button onclick="nextpage()">Start<i class="fa-solid fa-person-running"></i></button>
+                    <button onclick="reset()">Reset<i class="fa-solid fa-arrow-rotate-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+<script>
+    function nextpage(){
+    window.location.href='/workout'
+}
+function homepage(){
+        window.location.href='/'
+}
+    let viewYogaId=1;
+    let yogalistArray=[]
+    let yogaobjectArray=[]
+    let yogalist=document.querySelector('.yoga-select-ul')
+    let selectedyogalist=document.querySelector('.selected-yoga-ul')
+    let yogadetails=document.querySelector('.yoga-details')
+
+    fetch('static/assets/yogapose.json')
+    .then(response=>response.json())
+    .then(data=>{
+        data.forEach(element => {
+            console.log(element.img_url)
+            
+            let divElement=document.createElement('li');
+            divElement.classList.add('yoga-select-li');
+
+            divElement.innerHTML=`
+                            <div class="select">
+                                <div class="select-contents">
+                                    <img class="select-contents-img" src="${element.img_url}" alt="">
+                                    <div class="yoga-time">
+                                        <h4>${element.english_name}</h4>
+                                        <p>05.00</p>
+                                    </div>
+                                </div>
+                                <div class="yoga-btns ${'btn'+element.id}">
+                                    <button onclick="view(${element.id})"><i class="fa-solid fa-eye-slash"></i></button>
+                                    <button onclick="addtoCart(${element.id})"><i class="fa-solid fa-check"></i></button>
+                                    <button onclick="tryout(${element.id})">TRY</button>
+                                </div>
+                            </div>
+            `;        
+            
+            yogalist.appendChild(divElement);
+            view();
+        });
+    })
+
+
+    function showYogaDetails(){
+        fetch('static/assets/yogapose.json')
+    .then(response=>response.json())
+    .then(data=>{
+
+            let filteredElement=data.find(data=>data.id==viewYogaId)
+
+
+            yogadetails.innerHTML=`
+            <div class="details-img">
+                <img src="${filteredElement.pose}" alt="">
+            </div>
+            <h4>${filteredElement.english_name}</h4>
+            <p class="yoga-sanksrit-name">${filteredElement.name}</p>
+            <p class="details-description">
+                ${filteredElement.description}
+            </p>
+            `;        
+    })
+    }
+
+
+    function addtoCart(id){
+
+        let divid='.btn'+id.toString()
+
+        let tempdiv=document.querySelector(divid)
+
+        if(yogalistArray.includes(id)){
+            console.log('alreadey');
+            yogalistArray=yogalistArray.filter(item=>item!=id);
+            yogaobjectArray=yogaobjectArray.filter(item=>item.id!==id);
+
+            let divId='.div'+id.toString();
+            let removeDiv=document.querySelector(divId)
+
+            selectedyogalist.removeChild(removeDiv)
+
+            console.log('worked'+divid+tempdiv)
+            tempdiv.getElementsByTagName('i')[1].classList.remove('fa-xmark')
+            tempdiv.getElementsByTagName('i')[1].classList.add('fa-check')
+            
+        }
+        else{
+            yogalistArray.push(id);
+            let yogaObject={
+                id:id,
+                time:{
+                    minutes:5,seconds:0
+                }
+            }
+            yogaobjectArray.push(yogaObject)
+            viewonCart(id);
+
+
+            console.log('worked'+divid+tempdiv)
+            tempdiv.getElementsByTagName('i')[1].classList.remove('fa-check')
+            tempdiv.getElementsByTagName('i')[1].classList.add('fa-xmark')
+        }
+
+
+
+
+        console.log(yogaobjectArray.length);
+
+        if(yogalistArray.length>=1){
+
+            document.querySelector('.yoga-start-btns').style.display='block';
+            document.querySelector('.none-selected').style.display='none';
+        }
+        else{
+
+            document.querySelector('.yoga-start-btns').style.display='none';
+            document.querySelector('.none-selected').style.display='flex';
+        }
+        sessionStorage.setItem('yogaobjects', JSON.stringify(yogaobjectArray));
+    }
+
+    function view(id=null){
+        let divid;
+        let tempdiv;
+        if(id==null){
+
+            divid='.btn'+viewYogaId.toString()
+
+            tempdiv=document.querySelector(divid)
+            console.log('worked'+divid+tempdiv)
+            tempdiv.getElementsByTagName('i')[0].classList.add('fa-eye')
+            tempdiv.getElementsByTagName('i')[0].classList.remove('fa-eye-slash')
+        }
+        else{
+            console.log("working")
+            divid='.btn'+viewYogaId.toString()
+            tempdiv=document.querySelector(divid)
+            tempdiv.getElementsByTagName('i')[0].classList.remove('fa-eye')
+            tempdiv.getElementsByTagName('i')[0].classList.add('fa-eye-slash')
+
+            console.log('worked'+divid+tempdiv)
+            viewYogaId=id;
+            divid='.btn'+viewYogaId.toString()
+            tempdiv=document.querySelector(divid)
+            tempdiv.getElementsByTagName('i')[0].classList.add('fa-eye')
+            tempdiv.getElementsByTagName('i')[0].classList.remove('fa-eye-slash')
+        }
+
+        
+        showYogaDetails()
+    }
+
+
+
+    function viewonCart(id){
+
+            fetch('static/assets/yogapose.json')
+                .then(response=>response.json())
+                .then(data=>{
+                    let filteredElement=data.find(data=>data.id==id);
+                    console.log(filteredElement)
+                    if(filteredElement){
+
+                        let divElement=document.createElement('li');
+                        divElement.classList.add('selected-yoga-li');
+                        let divId='div'+id.toString();
+                        divElement.classList.add(divId);
+
+
+
+                        divElement.innerHTML=`
+                                <div class="selected-yoga-contents">
+                                    <div class="selected-yoga-contents-details">
+                                        <img src="${filteredElement.img_url}" alt="">
+                                        <h4>${filteredElement.english_name}</h4>
+                                    </div>
+                                    <div class="selected-yoga-btns">
+                                        <button onmousedown="startContinuousFunction(0,${filteredElement.id})" onmouseup="stopContinuousFunction()"><i class="fa-solid fa-minus"></i></button>
+                                        <h4>05.00</h4>
+                                        <button onmousedown="startContinuousFunction(1,${filteredElement.id})" onmouseup="stopContinuousFunction()"><i class="fa-solid fa-plus"></i></button>
+                                        <button onclick="removefromCart(${filteredElement.id})"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                        `;        
+                        selectedyogalist.appendChild(divElement);
+                    }
+                })
+                .catch(error=>console.error('Error fetching data',error))
+
+
+    }
+
+function removefromCart(id){
+            console.log('removing')
+            yogalistArray=yogalistArray.filter(item=>item!=id);
+            yogaobjectArray=yogaobjectArray.filter(item=>item.id!==id);
+
+            let divId='.div'+id.toString();
+            let removeDiv=document.querySelector(divId)
+            selectedyogalist.removeChild(removeDiv)
+
+
+            divId='.btn'+id.toString();
+
+            let tempdiv=document.querySelector(divId)
+            
+            console.log('worked'+divId+tempdiv)
+            tempdiv.getElementsByTagName('i')[1].classList.remove('fa-xmark')
+            tempdiv.getElementsByTagName('i')[1].classList.add('fa-check')
+
+
+            if(yogaobjectArray.length<=1){
+
+            document.querySelector('.yoga-start-btns').style.display='none';            
+            document.querySelector('.none-selected').style.display='flex';
+        }
+        
+}
+
+
+
+function startContinuousFunction(val,id) {
+    console.log(val)
+    intervalId = setInterval(()=>{
+
+        if(val==1){increaseTime(id);}       
+        else{decreaseTime(id);}     
+        
+        
+    }, 150); 
+}
+
+function stopContinuousFunction() {
+    clearInterval(intervalId);
+}
+
+
+
+
+function decreaseTime(id=null){
+
+        yogaobjectArray.forEach(element => {
+        if(element.id==id){
+            if(element.time.seconds==0){
+                if(element.time.minutes!=0){
+                    element.time.minutes-=1;
+                    element.time.seconds=59
+                }
+            }
+            else{
+                element.time.seconds-=1;
+            }
+            var str=element.time.minutes.toString().padStart(2,'0') +":"+element.time.seconds.toString().padStart(2,'0')
+
+            let divId='.div'+id.toString();
+            let selectDiv=document.querySelector(divId)
+            selectDiv.getElementsByTagName('h4')[1].textContent=str   
+            }
+
+
+        });
+
+    
+    console.log(yogaobjectArray)
+    sessionStorage.setItem('yogaobjects', JSON.stringify(yogaobjectArray));
+}
+
+function increaseTime(id){
+
+    console.log("+")
+    yogaobjectArray.forEach(element => {
+        if(element.id==id){
+            
+            if(element.time.seconds+1==60){
+                if(element.time.minutes+1!=100){
+                    element.time.minutes+=1;
+                    element.time.seconds=0
+                }
+            }
+            else{
+                element.time.seconds+=1;
+            }
+            var str=element.time.minutes.toString().padStart(2,'0') +":"+element.time.seconds.toString().padStart(2,'0')
+
+            let divId='.div'+id.toString();
+            let selectDiv=document.querySelector(divId)
+            selectDiv.getElementsByTagName('h4')[1].textContent=str   
+        }
+
+
+    });
+
+    sessionStorage.setItem('yogaobjects', JSON.stringify(yogaobjectArray));
+}
+
+
+function reset(){
+
+    selectedyogalist.innerHTML=''
+    document.querySelector('.yoga-start-btns').style.display='none';         
+    yogalistArray.forEach(item=>{
+
+        let divId='.btn'+item.toString();
+
+        let tempdiv=document.querySelector(divId)
+
+        tempdiv.getElementsByTagName('i')[1].classList.remove('fa-xmark')
+        tempdiv.getElementsByTagName('i')[1].classList.add('fa-check')
+        
+    })
+    yogalistArray=[]
+    yogaobjectArray=[]
+
+    sessionStorage.setItem('yogaobjects', JSON.stringify(yogaobjectArray));
+    document.querySelector('.yoga-start-btns').style.display='none';            
+    document.querySelector('.none-selected').style.display='flex';
+}
+
+
+var searchkey=document.querySelector('.search-inputbox')
+searchkey.addEventListener('input',()=>{
+    let key=searchkey.value.toLowerCase();
+
+    fetch('static/assets/yogapose.json')
+    .then(response=>response.json())
+    .then(data=>{
+
+        yogalist.innerHTML='';
+
+        let element=data.filter(item=>item.english_name.toLowerCase().includes(key));
+
+                    if(element.length>0){
+
+                        element.forEach(item=>{
+                            searchresult(item)
+                        })
+            }   
+        });
+    })
+
+
+
+
+function searchresult(item){
+    let divElement=document.createElement('li');
+
+    divElement.classList.add('yoga-select-li');
+
+    
+    divElement.innerHTML=`
+                                        <div class="select">
+                                            <div class="select-contents">
+                                                <img class="select-contents-img" src="${item.img_url}" alt="">
+                                                <div class="yoga-time">
+                                                    <h4>${item.english_name}</h4>
+                                                    <p>05.00</p>
+                                                </div>
+                                            </div>
+                                            <div class="yoga-btns ${'btn'+item.id}">
+                                                <button onclick="view(${item.id})"><i class="fa-solid fa-eye-slash"></i></button>
+                                                <button onclick="addtoCart(${item.id})"><i class="fa-solid fa-check"></i></button>
+                                                <button onclick="tryout(${element.id})">TRY</button>
+                                            </div>
+                                        </div>
+                        `;      
+
+
+                        yogalist.appendChild(divElement);
+
+    if(yogalistArray.includes(item.id)){
+
+        let divId='.btn'+item.id.toString();
+
+        let tempdiv=document.querySelector(divId)
+
+        tempdiv.getElementsByTagName('i')[1].classList.add('fa-xmark')
+        tempdiv.getElementsByTagName('i')[1].classList.remove('fa-check')
+    }
+    
+    if(viewYogaId==item.id){
+
+            let divid='.btn'+viewYogaId.toString()
+            let tempdiv=document.querySelector(divid)
+            tempdiv.getElementsByTagName('i')[0].classList.add('fa-eye')
+            tempdiv.getElementsByTagName('i')[0].classList.remove('fa-eye-slash')
+    }
+  
+                        
+
+}
+
+
+function tryout(id){
+
+    yogaobjectArray.push({
+        id:id,
+        time:{
+            minutes:5,
+            seconds:0
+        }
+    })
+    window.location.href='/workout';
+
+}
+
+
+
+</script>
+</html>

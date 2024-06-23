@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: "Poppins",sans-serif;
+    color:var(--darkbrown);
+}
+:root{
+    --white:#e8e4e2;
+    --green:#7ea06e;
+    --darkwhite:#bbb5b1;
+    --darkgreen:#355129;
+    --darkbrown:#473e30;
+    --brown:#a46242;
+    --grey:#7c7f84;
+    --darkyellow:#9f9570;
+}
+body{
+    background-color: var(--white);
+    height:100vh;
+    width:75%;
+    margin:0 auto;
+    scrollbar-width: thin;
+}
+button{
+    cursor: pointer;
+    transition-duration: .5s;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin:15px 0;
+}
+.btn i{
+    height:40px;
+    width:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+header i:hover{
+    color:var(--darkbrown);
+    background-color: var(--darkwhite);
+}
+
+i{
+    font-size: 20px;
+    color:var(--darkgreen);
+}
+section{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.yoga-list{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    overflow-y: scroll;
+
+}
+
+
+.main h3{
+    /* font-family: "Chakra Petch"; */
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+
+}
+.y-item{
+    display: flex;
+    align-items: center;
+    background-color: var(--green);
+    border-radius: 5px;
+    padding:8px;
+    justify-content: space-between;
+    margin-bottom: 1px;
+}
+.y-img{
+    box-sizing: border-box;
+    width:40px;
+    height: 40px;
+    margin-right: 13px;
+    background-color: whitesmoke;
+    border-radius: 4px;
+    object-fit: contain;
+}
+.y-time{
+    display: flex;
+    align-items: center;
+}
+.y-item button{
+    box-sizing: border-box;
+    padding: 5px 12px;
+    margin: 5px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: none;
+
+}
+.time{
+    width:40px;
+    text-align: center;
+}
+.start-btn{
+    box-sizing: border-box;
+    margin:30px 0;
+    background-color: #2a2a44;
+    border: none;
+    padding:10px;
+    border-radius: 14px;
+    font-size: .8rem;
+    cursor: pointer;
+}
+
+
+ .cam{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height:650px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.main-cam{
+    box-sizing: border-box;
+    width: min-content;
+    height: 100%;
+    margin-right: 15px;
+}
+
+.workout-list{
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+.T-list{
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width:300px;
+    display: flex;
+    flex-direction: column;
+}
+.T-list span i{
+    font-size: 1.3rem;
+}
+.T-list h3{
+    font-size: 20px;
+    box-sizing: border-box;
+    font-weight: 400;
+    /* font-family: monospace; */
+}
+.T-list .workout-list{
+    width:100%;
+}
+.T-list .y-item{
+    box-sizing: border-box;
+    width:100%;
+}
+.T-list p,div{
+    font-size: 14px;
+
+    color: #111;
+}
+.y-time div,.y-name{
+    font-weight: 500;
+    font-size: 1rem;
+}
+.T-list-contents{
+    background-color: whitesmoke;
+    height: calc( 100% - 60px );
+    border-radius: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+.output5{
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid rgba(188, 188, 188, 0.764);
+}
+.main-ref img{
+    width:100%;
+    height:300px;
+}
+
+.yoga-video{
+    object-fit:cover;
+}
+.output-predict{
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: whitesmoke;
+    width:100%;
+    height: 50px;
+
+    margin-bottom: 10px;
+    font-size: 25px;
+    font-weight: 400;
+    border-radius: 10px;
+    padding: 0 10px;
+}
+.output-dot{
+    margin-right: 10px;
+    font-size: 25px;
+}
+.profile{
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding-top:30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    
+    /* background-color: #363636; */
+}
+
+
+@media (max-width:900px) {
+    body{
+        width:85%;
+    }
+    header{
+        margin: 0;
+        margin-top:15px;
+    }
+    .cam{
+        width:100%;
+    }
+    .main-cam{
+        margin: 0;
+    }
+    .main-cam,.T-list{
+        width:100%;
+        height: min-content;
+    }
+    .output5{
+        width: 100%;
+    }
+
+}

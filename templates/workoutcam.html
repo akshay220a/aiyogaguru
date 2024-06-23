@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YogaPants.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/pose.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="../static/workout.css">
+</head>
+<body>
+    <header>
+        <div onclick="nextpage()" class="btn"><i class="fa-solid fa-arrow-left"></i></div>
+        <div class="btn"><i class="fa-solid fa-user"></i></div>
+    </header>
+    <div class="cam">
+        <div class="main-cam">
+
+          <canvas class="output5"></canvas>
+    
+        </div>
+        <div class="T-list">
+            <div class="output-predict"><i class="fa-solid fa-circle output-dot"></i><h3 class="output-predict-text">Incorrect Pose</h3></div>
+            <div class="T-list-contents">
+                <span style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;box-sizing: border-box;padding:8px 10px;">
+                  <h3 class="time-name">Timer</h3>
+                  <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;box-sizing: border-box;width:110px;margin-right: 5px;"><i id="pause" class="fa-regular fa-circle-pause"></i><h3 class="yoga-time" style="margin-right: 5px;">05.25</h3><i class="fa-solid fa-stopwatch"></i></div>
+                </span>
+                <div class="main-ref"><img class="yoga-image" ></div>
+                <span style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;box-sizing: border-box;padding:8px 10px;">
+                    <h3 class="yoga-name"></h3>
+                </span>
+                <div class="workout-list" style="display: flex;flex-direction:column;align-items: center;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+    <script>
+    function nextpage(){
+    window.location.href='/dashboard'
+}
+    actvity_time=0
+    actvity_id=null
+    
+    yogaChanged=false
+    isPaused=false
+    isCorrect=false
+
+    let pause = document.getElementById('pause');
+    pause.addEventListener('click', () => {
+        if (pause.classList.contains('fa-circle-pause')) {
+            isPaused = true;
+            pause.classList.remove('fa-circle-pause'); // Remove the class for pause icon
+            pause.classList.add('fa-circle-play'); // Add the class for play icon
+        } else {
+            isPaused = false;
+            pause.classList.remove('fa-circle-play'); // Remove the class for play icon
+            pause.classList.add('fa-circle-pause'); // Add the class for pause icon
+        }
+    });
+    
+    
+    const myButton = document.querySelector('.fa-info');
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      let name='';
+      let time;
+
+
+    
+    
+          const yogaimage=document.querySelector('.yoga-image')
+          const yogatime=document.querySelector('.yoga-time')
+          const yoganame=document.querySelector('.yoga-name')
+    
+          let isDetectionInProgress = false;
+    
+      let nextResponse=true
+          i=0
+          function sendPoseData(results, n) {
+            if(nextResponse==true){
+              nextResponse=false
+      var requestData = {
+        poseLandmarks: results.poseLandmarks,
+        additionalData: n
+      };
+    
+      $.ajax({
+        type: 'POST',
+        url: '/process_data', // Flask route to handle the data
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+        success: function(response) {
+          // console.log('Pose data sent successfully:', response);
+          nextResponse=true
+          if (response == n) {
+            out5.style.border = '4px solid #355129';
+            $(".output-predict-text,.output-dot").css("color","#355129")
+            $(".output-predict-text").text("Correct Pose")
+            isCorrect=true
+          } else {
+            out5.style.border = '4px solid rgb(73, 14, 14)';
+            $(".output-predict-text,.output-dot").css("color","rgb(73, 14, 14)")
+            $(".output-predict-text").text("Incorrect Pose")
+            isCorrect=false
+          }
+          $('.output-predict').css('display', 'flex');
+        },
+        error: function(xhr, status, error) {
+          nextResponse=true;
+          isCorrect=false;
+          // console.error('Error sending pose data:', error);
+        }
+      });
+    }
+    }
+    
+       
+           const video5 = document.createElement('video');
+           const out5 = document.getElementsByClassName('output5')[0];
+           const canvasCtx5 = out5.getContext('2d');
+           const videoWidth = 870; // Replace with your webcam's width
+            const videoHeight = 650; // Replace with your webcam's height
+            out5.width = videoWidth;
+            out5.height = videoHeight;
+    
+           function onResultsPose(results) {
+             document.body.classList.add('loaded');
+             //console.log(results.poseLandmarks);
+       
+             canvasCtx5.save();
+             canvasCtx5.clearRect(0, 0, out5.width, out5.height);
+             canvasCtx5.translate(out5.width, 0);
+             canvasCtx5.scale(-1, 1);
+             canvasCtx5.drawImage(results.image, 0, 0, out5.width, out5.height);
+             drawConnectors(canvasCtx5, results.poseLandmarks, POSE_CONNECTIONS);
+             canvasCtx5.restore();
+             if (results.poseLandmarks){
+               isDetectionInProgress = true;
+               body_language_class = sendPoseData(results,name);
+             }
+             else{
+              isDetectionInProgress = false;
+             }
+
+           }
+       
+           const pose = new Pose({locateFile: (file) => {
+             return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
+           },
+           upperBodyOnly: false,
+           smoothLandmarks: true,
+           minDetectionConfidence: 0.5,
+           minTrackingConfidence: 0.5
+           });
+           pose.onResults(onResultsPose);
+       
+           const camera = new Camera(video5, {
+             onFrame: async () => {
+               await pose.send({image: video5});
+             }
+           });
+           camera.start();  
+    
+      yogalistarray= JSON.parse(sessionStorage.getItem('yogaobjects'));
+
+    
+      console.log(yogalistarray)
+      const divItem=document.querySelector('.workout-list')
+
+
+
+      function displayNextYogaItem(){
+    if(yogalistarray.length>0){
+      fetch('../static/assets/yogapose.json')
+          .then(response => response.json())
+          .then(data => {
+              divItem.innerHTML = ``;
+              yogalistarray.forEach((item,index) => {
+                  const p = data.find(pose => pose.id === item.id);
+      
+                  if (p) {
+                    if(index==0){
+
+                        yogaChanged=true
+                        actvity_time=item.time
+                        actvity_id=p['id']
+                        yogaimage.src=p.pose
+                        yogatime.innerHTML=item.time.minutes.toString().padStart(2,'0')+':'+item.time.seconds.toString().padStart(2,'0')
+                        yoganame.innerHTML=p.english_name;
+                        name=p.name;
+                        time=item.time
+                     }
+                     else{
+                      const yogaItem = document.createElement('div');
+                      yogaItem.classList.add('y-item');
+                      yogaItem.innerHTML = `
+                          <div style="display: flex;align-items: center;">
+                              <img src="${p.img_url}" alt="" class="y-img">
+                              <p class="y-name">${p.name}</p>
+                          </div>
+                          <div class="y-time">
+                              <div class="time" style="width:min-content;display:flex;justify-content:space-around;align-items:center;">${item.time.minutes.toString().padStart(2,'0')+':'+item.time.seconds.toString().padStart(2,'0')}<i class="fa-solid fa-stopwatch"></i></div>
+                          </div>
+                      `;
+                      divItem.appendChild(yogaItem);
+                        }
+                  }
+                   else {
+                      console.log("Can't find pose with ID:", item.id);
+                  }
+                
+              });
+         })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+      else{
+        divItem.innerHTML="Workout Complete!"
+
+      }
+    }
+    
+const timeDisplayElement = document.querySelector('.yoga-time'); 
+
+function timer() {
+        if (isDetectionInProgress && !isPaused && isCorrect) {
+
+            if (time.minutes==0&&time.seconds==0) {    
+
+              yogalistarray.shift();
+
+
+              displayNextYogaItem();
+
+            }
+            else {
+                if(time.seconds==0){
+                    if(time.minutes!=0)
+                        {
+                        time.minutes-=1;
+                        time.seconds=59
+                        }
+                }
+                else{
+                    time.seconds-=1;
+                }
+        
+                timeDisplayElement.innerHTML =time.minutes.toString().padStart(2,'0')+':'+time.seconds.toString().padStart(2,'0')
+            }
+    
+        }
+    }
+    
+    
+    
+        displayNextYogaItem()
+        let timerid=setInterval(timer, 1000);
+
+</script>
+</html>
